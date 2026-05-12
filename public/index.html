@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Nexus calling system
+    </title>
+
+    <link
+        rel="icon"
+        type="image/jpeg"
+        href="assets/icons/logo.jpeg"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+
+    <div id="login-screen">
+
+        <div class="login-layout">
+
+            <div class="login-sidebar">
+
+                <div class="login-brand">
+
+                    <img
+                        src="assets/icons/logo.jpeg"
+                        alt="Logo"
+                        class="login-logo"
+                    >
+
+                    <h1>
+                        Sistema de Chamados
+                    </h1>
+
+                    <p>
+                        Plataforma corporativa
+                        para gerenciamento de
+                        suporte técnico,
+                        infraestrutura,
+                        sistemas e telefonia.
+                    </p>
+
+                </div>
+
+                <div class="login-features">
+
+                    <div class="feature-card">
+
+                        <span>🖥️</span>
+
+                        <div>
+
+                            <h3>
+                                Infraestrutura
+                            </h3>
+
+                            <p>
+                                Controle completo
+                                de suporte interno.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        <span>🔒</span>
+
+                        <div>
+
+                            <h3>
+                                Segurança
+                            </h3>
+
+                            <p>
+                                Controle de acesso
+                                seguro ao sistema.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="feature-card">
+
+                        <span>📊</span>
+
+                        <div>
+
+                            <h3>
+                                Dashboard
+                            </h3>
+
+                            <p>
+                                Estatísticas em
+                                tempo real.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="login-content">
+
+                <div class="login-card">
+
+                    <div class="login-top">
+
+                        <div>
+
+                            <h2>
+                                Entrar
+                            </h2>
+
+                            <p>
+                                Faça login no sistema
+                            </p>
+
+                        </div>
+
+                        <button
+                            id="theme-toggle"
+                            class="theme-btn"
+                            onclick="toggleTheme()"
+                        >
+                            🌙
+                        </button>
+
+                    </div>
+
+                    <form id="login-form">
+
+                        <div class="input-group">
+
+                            <label>
+                                Usuário
+                            </label>
+
+                            <input
+                                type="text"
+                                id="usuario"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>
+                                Senha
+                            </label>
+
+                            <input
+                                type="password"
+                                id="senha"
+                                required
+                            >
+
+                        </div>
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                gap:10px;
+                                margin-bottom:20px;
+                            "
+                        >
+
+                            <input
+                                type="checkbox"
+                                id="manter-logado"
+                            >
+
+                            <label for="manter-logado">
+                                Manter conectado
+                            </label>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="primary-btn login-btn"
+                        >
+                            Entrar
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SISTEMA -->
+
+    <div
+        id="sistema-screen"
+        style="display:none;"
+    >
+
+        <div class="layout">
+
+            <!-- SIDEBAR -->
+
+            <aside class="sidebar">
+
+                <div>
+
+                    <div class="logo-area">
+
+                        <img
+                            src="assets/icons/logo.jpeg"
+                            alt="Logo"
+                            class="sidebar-logo"
+                        >
+
+                        <h2 class="logo-title">
+                            Chamados
+                        </h2>
+
+                        <p>
+                            Sistema Corporativo
+                        </p>
+
+                    </div>
+
+                    <nav class="menu">
+
+                        <button
+                            class="menu-item active"
+                            data-painel="painel-usuario"
+                            onclick="mostrarPainel('painel-usuario')"
+                        >
+                            Dashboard
+                        </button>
+
+                        <button
+                            class="menu-item admin-only"
+                            id="botao-admin"
+                            data-painel="admin-area"
+                            onclick="mostrarPainel('admin-area')"
+                        >
+                            Administração
+                        </button>
+
+                    </nav>
+
+                </div>
+
+            </aside>
+
+            <!-- CONTEÚDO -->
+
+            <main class="content">
+
+                <header class="topbar">
+
+                    <div>
+
+                        <h1 class="title">
+                            Sistema de Chamados
+                        </h1>
+
+                        <p class="subtitle-text">
+                            Gerenciamento interno
+                            de suporte técnico
+                        </p>
+
+                    </div>
+
+                    <div class="topbar-actions">
+
+                        <button
+                            class="theme-btn"
+                            onclick="toggleTheme()"
+                        >
+                            🌙
+                        </button>
+
+                        <button
+                            class="logout-btn"
+                            onclick="logout()"
+                        >
+                            Sair
+                        </button>
+
+                    </div>
+
+                </header>
+
+                <!-- DASHBOARD USUÁRIO -->
+
+                <section
+                    id="painel-usuario"
+                    class="painel ativo"
+                >
+
+                    <div class="dashboard-grid">
+
+                        <div class="panel-card chart-card">
+
+                            <div class="card-header">
+
+                                <h2>
+                                    Status dos Chamados
+                                </h2>
+
+                            </div>
+
+                            <canvas
+                                id="graficoChamados"
+                            ></canvas>
+
+                        </div>
+
+                        <div class="stats-column">
+
+                            <div class="stat-card blue">
+
+                                <h2 id="stat-chamados">
+                                    0
+                                </h2>
+
+                                <p>
+                                    Chamados
+                                </p>
+
+                            </div>
+
+                            <div class="stat-card green">
+
+                                <h2 id="stat-usuarios">
+                                    0
+                                </h2>
+
+                                <p>
+                                    Usuários
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <!-- FORM CHAMADO -->
+
+                    <div class="panel-card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Abrir Chamado
+                            </h2>
+
+                        </div>
+
+                        <form
+                            id="chamado-form"
+                            enctype="multipart/form-data"
+                        >
+
+                            <div class="input-group">
+
+                                <label>
+                                    Categoria do Chamado
+                                </label>
+
+                                <select
+                                    id="categoria"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecione uma categoria
+                                    </option>
+
+                                    <option value="Suporte técnico">
+                                        Suporte técnico
+                                    </option>
+
+                                    <option value="Emails e contas">
+                                        Emails e contas
+                                    </option>
+
+                                    <option value="Rede e internet">
+                                        Rede e internet
+                                    </option>
+
+                                    <option value="Sistemas">
+                                        Sistemas
+                                    </option>
+
+                                    <option value="Telefonia">
+                                        Telefonia
+                                    </option>
+
+                                    <option value="Solicitações">
+                                        Solicitações
+                                    </option>
+
+                                    <option value="Outros">
+                                        Outros
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Tipo de Problema
+                                </label>
+
+                                <select id="tipo-problema">
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Prioridade
+                                </label>
+
+                                <select id="prioridade">
+
+                                    <option value="Baixa">
+                                        Baixa
+                                    </option>
+
+                                    <option
+                                        value="Média"
+                                        selected
+                                    >
+                                        Média
+                                    </option>
+
+                                    <option value="Alta">
+                                        Alta
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Título
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="titulo"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Descrição
+                                </label>
+
+                                <textarea
+                                    id="descricao"
+                                    rows="5"
+                                    maxlength="5000"
+                                    required
+                                ></textarea>
+
+                                <small id="contador-descricao">
+                                    0 / 5000
+                                </small>
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Anexo
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="anexo"
+                                >
+
+                            </div>
+
+                            <button
+                                class="primary-btn"
+                                type="submit"
+                            >
+                                Abrir Chamado
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <br>
+
+                    <!-- MEUS CHAMADOS -->
+
+                    <div class="panel-card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Meus Chamados
+                            </h2>
+
+                        </div>
+
+                        <div class="table-wrapper">
+
+                            <table class="table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>ID</th>
+
+                                        <th>Título</th>
+
+                                        <th>Categoria</th>
+
+                                        <th>Status</th>
+
+                                        <th>Prioridade</th>
+
+                                        <th>Ações</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody
+                                    id="lista-meus-chamados"
+                                >
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- ADMIN -->
+
+                <section
+                    id="admin-area"
+                    class="painel"
+                >
+
+                    <div class="dashboard-grid">
+
+                        <div class="stat-card blue">
+
+                            <h2 id="stat-chamados-admin">
+                                0
+                            </h2>
+
+                            <p>
+                                Total de Chamados
+                            </p>
+
+                        </div>
+
+                        <div class="stat-card green">
+
+                            <h2 id="stat-usuarios-admin">
+                                0
+                            </h2>
+
+                            <p>
+                                Usuários do Sistema
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <!-- FILTROS -->
+
+                    <div class="panel-card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Filtros
+                            </h2>
+
+                        </div>
+
+                        <div
+                            style="
+                                display:grid;
+                                grid-template-columns:
+                                repeat(auto-fit,minmax(220px,1fr));
+                                gap:15px;
+                            "
+                        >
+
+                            <div class="input-group">
+
+                                <label>
+                                    Buscar Título
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="filtro-busca"
+                                    placeholder="Pesquisar..."
+                                >
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Status
+                                </label>
+
+                                <select id="filtro-status">
+
+                                    <option value="">
+                                        Todos
+                                    </option>
+
+                                    <option value="Novo">
+                                        Novo
+                                    </option>
+
+                                    <option value="Pendente">
+                                        Pendente
+                                    </option>
+
+                                    <option value="Em andamento">
+                                        Em andamento
+                                    </option>
+
+                                    <option value="Fechado">
+                                        Fechado
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="input-group">
+
+                                <label>
+                                    Prioridade
+                                </label>
+
+                                <select id="filtro-prioridade">
+
+                                    <option value="">
+                                        Todas
+                                    </option>
+
+                                    <option value="Baixa">
+                                        Baixa
+                                    </option>
+
+                                    <option value="Média">
+                                        Média
+                                    </option>
+
+                                    <option value="Alta">
+                                        Alta
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <!-- TODOS OS CHAMADOS -->
+
+                    <div class="panel-card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Todos os Chamados
+                            </h2>
+
+                        </div>
+
+                        <div class="table-wrapper">
+
+                            <table class="table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>ID</th>
+
+                                        <th>Usuário</th>
+
+                                        <th>Categoria</th>
+
+                                        <th>Tipo</th>
+
+                                        <th>Título</th>
+
+                                        <th>Prioridade</th>
+
+                                        <th>Prioridade</th>
+                                        
+                                        <th>Status</th>
+
+                                        <th>Ações</th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody id="lista-chamados">
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <!-- FEED -->
+
+                    <div class="panel-card">
+
+                        <div class="card-header">
+
+                            <h2>
+                                Feed de Atividades
+                            </h2>
+
+                        </div>
+
+                        <div
+                            id="feed-atividades"
+                            class="feed-atividades"
+                        >
+
+                        </div>
+
+                    </div>
+
+                    <br>
+
+                    <!-- CHAT -->
+
+                    <div
+                        class="panel-card"
+                        id="painel-chat"
+                        style="display:none;"
+                    >
+
+                        <div class="card-header">
+
+                            <h2 id="chat-titulo">
+                                Chamado
+                            </h2>
+
+                        </div>
+
+                        <div
+                            id="chat-mensagens"
+                            class="chat-box"
+                        >
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <textarea
+                                id="nova-mensagem"
+                                rows="8"
+                                maxlength="5000"
+                                placeholder="Digite uma mensagem..."
+                                class="chat-textarea"
+                            ></textarea>
+
+                            <small id="contador-mensagem">
+                                0 / 5000
+                            </small>
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label>
+                                Arquivo
+                            </label>
+
+                            <input
+                                type="file"
+                                id="arquivo-chat"
+                            >
+
+                        </div>
+
+                        <button
+                            class="primary-btn"
+                            onclick="enviarMensagem()"
+                        >
+                            Enviar Mensagem
+                        </button>
+
+                    </div>
+
+                    <br>
+
+                    <!-- GERENCIAR USUÁRIOS -->
+
+                    <div class="users-layout">
+
+                        <div class="panel-card">
+
+                            <div class="card-header">
+
+                                <h2>
+                                    Criar Usuário
+                                </h2>
+
+                            </div>
+
+                            <form
+                                id="usuario-form"
+                                autocomplete="off"
+                            >
+
+                                <div class="input-group">
+
+                                    <label>
+                                        Usuário
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="novo-usuario"
+                                        autocomplete="off"
+                                    >
+
+                                </div>
+
+                                <div class="input-group">
+
+                                    <label>
+                                        Senha
+                                    </label>
+
+                                    <input
+                                        type="password"
+                                        id="nova-senha"
+                                        autocomplete="new-password"
+                                    >
+
+                                </div>
+
+                                <div class="input-group">
+
+                                    <label>
+                                        Tipo
+                                    </label>
+
+                                    <select id="tipo-usuario">
+
+                                        <option value="usuario">
+                                            Usuário
+                                        </option>
+
+                                        <option value="superadmin">
+                                            Super Admin
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <button
+                                    class="primary-btn"
+                                    type="button"
+                                    id="btn-criar-usuario"
+                                >
+                                    Criar Usuário
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <div class="panel-card">
+
+                            <div class="card-header">
+
+                                <h2>
+                                    Usuários
+                                </h2>
+
+                            </div>
+
+                            <div class="table-wrapper">
+
+                                <table class="table">
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>Usuário</th>
+
+                                            <th>Tipo</th>
+
+                                            <th>Ações</th>
+
+                                        </tr>
+
+                                    </thead>
+
+                                    <tbody id="lista-usuarios">
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL -->
+
+    <div
+        id="modal-chamado"
+        class="modal"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-top">
+
+                <h2>
+                    Detalhes do Chamado
+                </h2>
+
+                <button
+                    class="close-btn"
+                    onclick="fecharModalChamado()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+            <div id="modal-body">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+
+    <div
+        id="toast-container"
+        class="toast-container"
+    >
+
+    </div>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
